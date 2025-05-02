@@ -4,20 +4,20 @@ describe('Shady Meadows UI and Functional Test Suite', () => {
     cy.visit('https://automationintesting.online/')
   });
 
-  // ✅ TC01: UI - Hero section visibility
+  //  TC01: UI - Hero section visibility
   it('TC01 - should display hero banner and welcome text', () => {
     cy.get('.hero').should('be.visible')
     cy.contains('Welcome to Shady Meadows B&B').should('be.visible')
     cy.get('.hero').should('have.css', 'background-image').and('include', 'rbp-logo.jpg')
   });
 
-  // ✅ TC02: Functional - Book Now navigation
+  //  TC02: Functional - Book Now navigation
   it('TC02 - should navigate to reservation page on Book Now click', () => {
     cy.contains('Book now').first().click()
     cy.url().should('include', '/reservation')
   });
 
-  // ✅ TC03: UI - Room Cards
+  //  TC03: UI - Room Cards
   it('TC03 - should display all 3 room types', () => {
     cy.get('.room-card').should('have.length', 3)
     cy.contains('Single').should('exist')
@@ -25,7 +25,7 @@ describe('Shady Meadows UI and Functional Test Suite', () => {
     cy.contains('Suite').should('exist')
   });
 
-  // ✅ TC04: Valid Submission - Contact Form
+  //  TC04: Valid Submission - Contact Form
   it('TC04 - should submit contact form with valid inputs', () => {
     cy.visit('https://automationintesting.online/#contact')
     cy.get('#name').type('Test User')
@@ -40,7 +40,7 @@ describe('Shady Meadows UI and Functional Test Suite', () => {
     cy.contains('Submit').should('exist')
   });
 
-  // ✅ TC05: Invalid Submission - Empty Contact Form
+  // TC05: Invalid Submission - Empty Contact Form
   it('TC05 - should show validation errors on empty contact form submission', () => {
     cy.visit('https://automationintesting.online/#contact')
     cy.get('#name').clear()
@@ -55,7 +55,7 @@ describe('Shady Meadows UI and Functional Test Suite', () => {
     cy.get('#phone').should('have.value', '')
   });
 
-  // ✅ TC06: UI - Check footer and contact info
+  //  TC06: UI - Check footer and contact info
   it('TC06 - should display footer with contact info and links', () => {
     cy.get('footer').should('be.visible')
     cy.contains('fake@fakeemail.com').should('exist')
@@ -68,7 +68,7 @@ describe('Shady Meadows UI and Functional Test Suite', () => {
     });
   });
 
-  // ✅ TC07: Navigation links work
+  //  TC07: Navigation links work
   it('TC07 - should navigate to each section with nav links', () => {
     cy.get('nav').contains('Rooms').click()
     cy.url().should('include', '#rooms')
