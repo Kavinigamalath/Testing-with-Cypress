@@ -29,7 +29,7 @@ describe('Store Management functional testing', () => {
       
         cy.get('button[type="submit"]').click();
       
-        cy.contains("Quantity must be a positive integer").should('exist');
+        cy.contains("Quantity must be a positive integer greater than zero and with a maximum length of 3.").should('exist');
       });
 
   });
