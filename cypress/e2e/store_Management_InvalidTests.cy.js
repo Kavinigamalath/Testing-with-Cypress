@@ -15,7 +15,7 @@ describe('Store Management functional testing', () => {
     cy.url().should('include', '/store');
   });
 
-   it('should prevent submission and show validation error when fields are empty in add store item form', () => {
+  it('should prevent submission and show validation error when fields are empty in add store item form', () => {
     cy.visit('/store/create');
   
     // Try submitting form without filling anything
@@ -68,30 +68,30 @@ describe('Store Management functional testing', () => {
   });
 
   it('should show browser validation when Item Name is empty in edit store item form', () => {
-  cy.visit('/store');
+    cy.visit('/store');
 
-  cy.get('table tbody tr').last().within(() => {
-    cy.get('a[href^="/store/edit"]').scrollIntoView().click({ force: true });
+    cy.get('table tbody tr').last().within(() => {
+      cy.get('a[href^="/store/edit"]').scrollIntoView().click({ force: true });
+    });
+
+    // Ensure form is ready
+    cy.get('form').should('exist');
+
+    // Clear the Item Name field
+    cy.get('input#itemName').should('not.be.disabled').clear();
+
+    // Try submitting the form using native form submission (preferred)
+    cy.get('form').then(($form) => {
+      const formElement = $form[0];
+      const itemNameInput = formElement.querySelector('#itemName');
+
+      // Force the browser to check validity (this time directly on the input)
+      const isValid = itemNameInput.checkValidity();
+
+      expect(isValid).to.be.false;
+      expect(itemNameInput.validationMessage).to.eq('Please fill out this field.');
+    });
   });
-
-  // Ensure form is ready
-  cy.get('form').should('exist');
-
-  // Clear the Item Name field
-  cy.get('input#itemName').should('not.be.disabled').clear();
-
-  // Try submitting the form using native form submission (preferred)
-  cy.get('form').then(($form) => {
-    const formElement = $form[0];
-    const itemNameInput = formElement.querySelector('#itemName');
-
-    // Force the browser to check validity (this time directly on the input)
-    const isValid = itemNameInput.checkValidity();
-
-    expect(isValid).to.be.false;
-    expect(itemNameInput.validationMessage).to.eq('Please fill out this field.');
-  });
-});
 
   it('should show custom error for negative Selling Price in edit store item form', () => {
     cy.visit('/store');
@@ -114,16 +114,16 @@ describe('Store Management functional testing', () => {
   });
 
   it('should show no items found when searching for a non-existing Item Name', () => {
-  cy.visit('/store');
+    cy.visit('/store');
 
-  // Ensure the table is initially loaded
-  cy.get('table tbody tr').should('exist');
+    // Ensure the table is initially loaded
+    cy.get('table tbody tr').should('exist');
 
-  // Enter a random non-existing string into the search bar
-  cy.get('input[type="text"]').clear().type('ThisItemDoesNotExist123456');
+    // Enter a random non-existing string into the search bar
+    cy.get('input[type="text"]').clear().type('ThisItemDoesNotExist123456');
 
-  // Assert that the table shows the 'No items found' message
-  cy.get('table tbody').should('contain', 'No items found');
-});
+    // Assert that the table shows the 'No items found' message
+    cy.get('table tbody').should('contain', 'No items found');
+  });
 
 });

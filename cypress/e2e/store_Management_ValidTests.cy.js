@@ -45,50 +45,50 @@ describe('Store Management functional testing', () => {
 
   });
 
-    it('should successfully update store item with valid data', () => {
-     // Find the last row and click the Edit icon (scroll it into view first)
-     cy.get('table tbody tr').last().within(() => {
-       cy.get('a[href^="/store/edit"]')
-         .scrollIntoView()
-         .click({ force: true }); // Fix for visibility issue
-     });
- 
-     // Wait for edit form and change selling price
-     cy.url().should('include', '/store/edit');
-     cy.get('input#itemName').clear().type('Sunsilk Hair Gel- Updated'); 
-     cy.get('input#description').clear().type('Sunsilk Hair Gel for styling - Updated');
-     cy.get('input#sPrice').clear().type('1000'); // Update selling price
- 
-     // Submit the form
-     cy.get('button[type="submit"]').click();
- 
-     // Assert we’re back at /store and update is reflected
-     cy.url({ timeout: 10000 }).should('include', '/store');
-     cy.contains('Item List').should('exist');
-
-     cy.get('table').should('exist');
-
+  it('should successfully update store item with valid data', () => {
+    // Find the last row and click the Edit icon (scroll it into view first)
+    cy.get('table tbody tr').last().within(() => {
+      cy.get('a[href^="/store/edit"]')
+        .scrollIntoView()
+        .click({ force: true }); // Fix for visibility issue
     });
 
-it('should successfully delete store item with valid data', () => {
+    // Wait for edit form and change selling price
+    cy.url().should('include', '/store/edit');
+    cy.get('input#itemName').should('not.be.disabled').clear().type('Sunsilk Hair Gel- Updated'); 
+    cy.get('input#description').should('not.be.disabled').clear().type('Sunsilk Hair Gel for styling - Updated');
+    cy.get('input#sPrice').should('not.be.disabled').clear().type('1000'); // Update selling price
 
-  // Find the last row and click the Delete icon
-  cy.get('table tbody tr').last().within(() => {
-    cy.get('a[href^="/store/delete"]')
-      .scrollIntoView()
-      .click({ force: true });
+    // Submit the form
+    cy.get('button[type="submit"]').click();
+
+    // Assert we’re back at /store and update is reflected
+    cy.url({ timeout: 10000 }).should('include', '/store');
+    cy.contains('Item List').should('exist');
+
+    cy.get('table').should('exist');
+
   });
 
-  // Confirm we're on the delete confirmation page
-  cy.url().should('include', '/store/delete/');
+  it('should successfully delete store item with valid data', () => {
 
-  // Click the Delete button to confirm deletion
-  cy.contains('button', 'Delete').click();
+    // Find the last row and click the Delete icon
+    cy.get('table tbody tr').last().within(() => {
+      cy.get('a[href^="/store/delete"]')
+        .scrollIntoView()
+        .click({ force: true });
+    });
 
-  // Ensure we’re redirected back to the store list
-  cy.url({ timeout: 10000 }).should('include', '/store');
-  cy.contains('Item List').should('exist');
-   });
+    // Confirm we're on the delete confirmation page
+    cy.url().should('include', '/store/delete/');
+
+    // Click the Delete button to confirm deletion
+    cy.contains('button', 'Delete').click();
+
+    // Ensure we’re redirected back to the store list
+    cy.url({ timeout: 10000 }).should('include', '/store');
+    cy.contains('Item List').should('exist');
+    });
 
   it('should filter store items by Item Name using search', () => {
   cy.visit('/store');
