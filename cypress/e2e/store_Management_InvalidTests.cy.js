@@ -66,29 +66,31 @@ describe('Store Management functional testing', () => {
     cy.contains("Quantity must be a positive integer").should('exist');
   });
 
-it('should show browser validation when Item Name is empty in edit store item form', () => {
-    cy.visit('/store');
-  
-    cy.get('table tbody tr').last().within(() => {
-      cy.get('a[href^="/store/edit"]').scrollIntoView().click({ force: true });
-    });
-  
-    // Clear the Item Name field
-    cy.get('input#itemName').clear();
-  
-    // Try submitting form
-    cy.get('form').then(($form) => {
-      const formElement = $form[0];
-      const itemNameInput = formElement.querySelector('#itemName');
-  
-      // Use native browser method to trigger validation
-      const isValid = formElement.reportValidity();
-  
-      // Expect form to be invalid and validationMessage to be present
-      expect(isValid).to.be.false;
-      expect(itemNameInput.validationMessage).to.eq('Please fill out this field.');
-    });
+  it('should show browser validation when Item Name is empty in edit store item form', () => {
+  cy.visit('/store');
+
+  cy.get('table tbody tr').last().within(() => {
+    cy.get('a[href^="/store/edit"]').scrollIntoView().click({ force: true });
   });
+
+  // Ensure form is ready
+  cy.get('form').should('exist');
+
+  // Clear the Item Name field
+  cy.get('input#itemName').should('not.be.disabled').clear();
+
+  // Try submitting the form using native form submission (preferred)
+  cy.get('form').then(($form) => {
+    const formElement = $form[0];
+    const itemNameInput = formElement.querySelector('#itemName');
+
+    // Force the browser to check validity (this time directly on the input)
+    const isValid = itemNameInput.checkValidity();
+
+    expect(isValid).to.be.false;
+    expect(itemNameInput.validationMessage).to.eq('Please fill out this field.');
+  });
+});
 
   it('should show custom error for negative Selling Price in edit store item form', () => {
     cy.visit('/store');
@@ -109,5 +111,18 @@ it('should show browser validation when Item Name is empty in edit store item fo
     //cy.get('.swal2-title').should('contain', 'error');
     cy.get('.swal2-html-container').should('contain', 'Selling Price must be a positive number');
   });
+
+  it('should show no items found when searching for a non-existing Item Name', () => {
+  cy.visit('/store');
+
+  // Ensure the table is initially loaded
+  cy.get('table tbody tr').should('exist');
+
+  // Enter a random non-existing string into the search bar
+  cy.get('input[type="text"]').clear().type('ThisItemDoesNotExist123456');
+
+  // Assert that the table shows the 'No items found' message
+  cy.get('table tbody').should('contain', 'No items found');
+});
 
 });

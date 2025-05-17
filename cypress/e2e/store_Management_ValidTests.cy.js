@@ -90,4 +90,26 @@ it('should successfully delete store item with valid data', () => {
   cy.contains('Item List').should('exist');
    });
 
+  it('should filter store items by Item Name using search', () => {
+  cy.visit('/store');
+
+  // Wait until the table and search bar are visible
+  cy.get('input[type="text"]').should('exist');
+  cy.get('table tbody tr').should('exist');
+
+  // Capture the name of the first item to use as search query
+  cy.get('table tbody tr').first().find('td').eq(2).invoke('text').then((itemName) => {
+    const trimmedItemName = itemName.trim();
+
+    // Enter the item name into the search bar
+    cy.get('input[type="text"]').clear().type(trimmedItemName);
+
+    // Assert that all displayed rows contain the searched name
+    cy.get('table tbody tr').each(($row) => {
+      cy.wrap($row).find('td').eq(2).should('contain.text', trimmedItemName);
+    });
+  });
+});
+
+
 });
