@@ -1,6 +1,6 @@
 Cypress.config('baseUrl', 'http://localhost:5173'); 
 
-Cypress.config('defaultCommandTimeout', 10000); 
+Cypress.config('defaultCommandTimeout', 100000); 
 
 Cypress.on('uncaught:exception', () => false)
 

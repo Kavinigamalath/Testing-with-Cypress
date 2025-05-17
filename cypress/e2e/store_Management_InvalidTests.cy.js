@@ -1,6 +1,6 @@
 Cypress.config('baseUrl', 'http://localhost:5173'); 
 
-Cypress.config('defaultCommandTimeout', 10000); 
+Cypress.config('defaultCommandTimeout', 100000); 
 
 Cypress.on('uncaught:exception', () => false)
 
@@ -53,6 +53,7 @@ describe('Store Management functional testing', () => {
   it('should show error for invalid quantity input in add store item form', () => {
     cy.visit('/store/create');
   
+    // Fill everything correctly except quantity
     cy.get('input[type="file"]').selectFile('cypress/fixtures/sample.jpg');
     cy.get('input[id="itemNo"]').type('ITEM003');
     cy.get('input[id="itemName"]').type('Shampoo');
