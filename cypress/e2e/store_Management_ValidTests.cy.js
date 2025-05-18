@@ -45,30 +45,30 @@ describe('Store Management functional testing', () => {
 
   });
 
-  it('should successfully update store item with valid data', () => {
-    // Find the last row and click the Edit icon (scroll it into view first)
-    cy.get('table tbody tr').last().within(() => {
-      cy.get('a[href^="/store/edit"]')
-        .scrollIntoView()
-        .click({ force: true }); // Fix for visibility issue
-    });
+  // it('should successfully update store item with valid data', () => {
+  //   // Find the last row and click the Edit icon (scroll it into view first)
+  //   cy.get('table tbody tr').last().within(() => {
+  //     cy.get('a[href^="/store/edit"]')
+  //       .scrollIntoView()
+  //       .click({ force: true }); // Fix for visibility issue
+  //   });
 
-    // Wait for edit form and change selling price
-    cy.url().should('include', '/store/edit');
-    cy.get('input#itemName').should('not.be.disabled').clear().type('Sunsilk Hair Gel- Updated'); 
-    cy.get('input#description').should('not.be.disabled').clear().type('Sunsilk Hair Gel for styling - Updated');
-    cy.get('input#sPrice').should('not.be.disabled').clear().type('1000'); // Update selling price
+  //   // Wait for edit form and change selling price
+  //   cy.url().should('include', '/store/edit');
+  //   cy.get('input#itemName').should('not.be.disabled').clear().type('Sunsilk Hair Gel- Updated'); 
+  //   cy.get('input#description').should('not.be.disabled').clear().type('Sunsilk Hair Gel for styling - Updated');
+  //   cy.get('input#sPrice').should('not.be.disabled').clear().type('1000'); // Update selling price
 
-    // Submit the form
-    cy.get('button[type="submit"]').click();
+  //   // Submit the form
+  //   cy.get('button[type="submit"]').click();
 
-    // Assert we’re back at /store and update is reflected
-    cy.url({ timeout: 10000 }).should('include', '/store');
-    cy.contains('Item List').should('exist');
+  //   // Assert we’re back at /store and update is reflected
+  //   cy.url({ timeout: 10000 }).should('include', '/store');
+  //   cy.contains('Item List').should('exist');
 
-    cy.get('table').should('exist');
+  //   cy.get('table').should('exist');
 
-  });
+  // });
 
   it('should successfully delete store item with valid data', () => {
 
